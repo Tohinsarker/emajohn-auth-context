@@ -1,9 +1,14 @@
+import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../UserContext/UserContext';
 
 const Register = () => {
 
-    
+    const {createUser,signInWithGoogle} = useContext(AuthContext);
+    const googleProvider = new GoogleAuthProvider();
+
     const [name, setNmae] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,6 +18,9 @@ const Register = () => {
     const [passwordError, setPasswordError] = useState("");
     const [passwordError2, setPasswordErro2] = useState("");
     const [passwordMatch, setPasswordMatch] = useState("");
+
+
+    const navigate = useNavigate();
 
     const handlePassword = e => {
        
@@ -65,30 +73,31 @@ const Register = () => {
         }
     }
     const handleSubmit = e => {
-    //     e.preventDefault();
+        e.preventDefault();
 
-    //    createUser(email, password)
-    //     .then(result => {
-    //         const user = result.user;
-    //         console.log(user);
-    //     })
-    //     .catch(error => {
-    //         console.log(error);
-    //     })
-
-
+       createUser(email, password)
+        .then(result => {
+            const user = result.user;
+            navigate('/')
+            console.log(user);
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     const handleSignWithGoogle = () => {
-        // signInWithGoogle()
-        // .then(result => {
-        //     const googleUser = result.user;
-        //     console.log(googleUser)
-        // })
-        // .catch(error => {
-        //     console.log(error)
-        // });
+        signInWithGoogle(googleProvider)
+        .then(result => {
+            const googleUser = result.user;
+            navigate("/");
+            console.log(googleUser)
+        })
+        .catch(error => {
+            console.log(error)
+        });
     }
+
     return (
         <div>
           
@@ -134,7 +143,7 @@ const Register = () => {
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Login</button>
+                            <button className="btn btn-primary">Register</button>
                         </div>
                     </form>
                     <button onClick={handleSignWithGoogle} className="btn btn-primary">Sign In With Google</button>

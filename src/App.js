@@ -10,6 +10,7 @@ import { productsAndCartLoader } from './loaders/productsAndCartLoader';
 import Register from './components/Register/Register';
 import ErrorPage from './components/ErrorElement/ErrorPage';
 import Login from './components/Login/Login';
+import PrivateRoute from './routes/PrivateRoute';
 
 
 function App() {
@@ -26,9 +27,13 @@ function App() {
           element: <Shop></Shop>
         },
         {
+          path: '/shop',
+          element: <Shop></Shop>
+        },
+        {
           path:'orders',
           loader: productsAndCartLoader,
-          element: <Orders></Orders>
+          element: <PrivateRoute><Orders></Orders></PrivateRoute>
         },
         {
           path: 'inventory',

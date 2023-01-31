@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
+import { AuthContext } from '../../UserContext/UserContext';
 import { deleteShoppingCart, removeFromDb } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
 import ReviewItem from '../ReviewItem/ReviewItem';
@@ -7,7 +8,12 @@ import ReviewItem from '../ReviewItem/ReviewItem';
 const Orders = () => {
     const { initialCart } = useLoaderData();  // { products: products, initialCart: initialCart }
     const [cart, setCart] = useState(initialCart)
+    const {loading,user} = useContext(AuthContext);
 
+    if(loading){
+
+        return <div>loadddding!!!!!!!!!!!!!!!!!!!!!!!!!!!!</div>
+    }
     const handleRemoveItem = (id) => {
         const remaining = cart.filter(product => product.id !== id);
         setCart(remaining);
